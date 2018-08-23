@@ -4,7 +4,7 @@ apply plugin: 'war'
 apply plugin: 'eclipse'
 apply plugin: 'eclipse-wtp'
 
-group = 'com.qiqiim'
+group = 'com.kefu'
 version = '0.4.1'
 
 description = "kefu-web dev Webapp"
