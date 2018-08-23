@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tool="http://www.springframework.org/schema/tool" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+	http://www.springframework.org/schema/beans/spring-beans.xsd  
+	http://www.springframework.org/schema/tx  
+	http://www.springframework.org/schema/tx/spring-tx.xsd  
+	http://www.springframework.org/schema/aop  
+	http://www.springframework.org/schema/aop/spring-aop.xsd  
+	http://www.springframework.org/schema/jee  
+	http://www.springframework.org/schema/jee/spring-jee.xsd  
+	http://www.springframework.org/schema/context  
+	http://www.springframework.org/schema/context/spring-context.xsd  
+	http://www.springframework.org/schema/util  
+	http://www.springframework.org/schema/util/spring-util.xsd  
+	http://www.springframework.org/schema/tool  
+	http://www.springframework.org/schema/tool/spring-tool.xsd
+	http://www.springframework.org/schema/task 
+	http://www.springframework.org/schema/task/spring-task.xsd
+	http://www.springframework.org/schema/websocket 
+	http://www.springframework.org/schema/websocket/spring-websocket-4.2.xsd
+	http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd" default-autowire="byName">
+
+ 
+  
+    <!-- imserver  port 2000    -->
+    <bean id="imServer" class="com.kefu.server.ImServer" init-method="init"   destroy-method="destroy">
+        <property name="port" value="2000"/>
+    </bean>  
+   <!-- imwebsocketserver  port 2048    -->
+   <bean id="imWebsocketServer" class="com.kefu.server.ImWebsocketServer" init-method="init"   destroy-method="destroy">
+        <property name="port" value="2048"/>
+   </bean> 
+   <bean id="connertor" class="com.kefu.server.connertor.impl.ImConnertorImpl"/> 
+   <bean id="proxy" class="com.kefu.server.proxy.impl.MessageProxyImpl"/>
+   <bean id="sessionManager" class="com.kefu.server.session.impl.SessionManagerImpl"/>
+    <!-- 图灵机器人 key请自行申请 -->
+    <!--  <bean id="rebotProxy" class="com.kefu.rebot.proxy.impl.TLRebotProxy">
+    	 <property name="apiUrl" value="http://www.tuling123.com/openapi/api"/>
+        <property name="key" value=""/>
+    </bean>  -->
+    <!-- 茉莉机器人 -->
+     <bean id="rebotProxy" class="com.kefu.rebot.proxy.impl.MLRebotProxy">
+     	 <property name="apiUrl" value="http://i.itpk.cn/api.php"/>
+         <property name="key" value=""/>
+         <property name="secret" value=""/>
+     </bean>  
+    	 
+</beans>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr/dwr20.dtd">  
+<!-- 通用dwr配置 -->  
+<dwr>  
+    <allow>  
+        <!--  
+        Spring中获取java对象  
+        javascript属性表示为jsp页面引用的脚本名  
+        creator属性是最重要的配置，设置为spring为通过spring创建对象实例，设置为new表示通过new创建对象实例  
+        -->  
+        <create javascript="Imwebserver" creator="spring">  
+           <!--
+            name设置为beanName，value属性就设为spring中对应bean的id  
+            name若设置为class,value属性就设为controller的路径  
+             -->
+            <param name="beanName" value="dwrController"></param>  
+        </create>   
+    </allow>  
+</dwr>  

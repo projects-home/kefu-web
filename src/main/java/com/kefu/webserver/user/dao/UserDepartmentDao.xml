@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kefu.webserver.user.dao.UserDepartmentDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kefu.webserver.user.model.UserDepartmentEntity" id="userDepartmentMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="count" column="count"/>
+        <result property="level" column="level"/>
+        <result property="parentid" column="parentid"/>
+        <result property="remark" column="remark"/>
+        <result property="createdate" column="createdate"/>
+        <result property="updatedate" column="updatedate"/>
+        <result property="updateuser" column="updateuser"/>
+        <result property="isdel" column="isdel"/>
+    </resultMap>
+    
+   <resultMap type="com.kefu.webserver.user.model.ImFriendUserData" id="userFriendMap" >
+   		 <result property="id" column="id"/>
+         <result property="groupname" column="groupname"/>
+   		 <!-- 一对多查询    -->
+         <collection property="list" column="id" select="queryFriendUser"></collection> 
+   </resultMap>
+    
+  <sql id="Base_Column_List" > 
+  	  	     id ,  	        
+  	  	     name ,  	        
+  	  	     count ,  	        
+  	  	     level ,  	        
+  	  	     parentid ,  	        
+  	  	     remark ,  	        
+  	  	     createdate ,  	        
+  	  	     updatedate ,  	        
+  	  	     updateuser ,  	        
+  	  	     isdel   	     
+  </sql>
+
+	<select id="queryObject" resultType="com.kefu.webserver.user.model.UserDepartmentEntity">
+		select  <include refid="Base_Column_List" />  from user_department where id = #{value}
+	</select>
+	 
+	<select id="queryFriendUser" resultType="com.kefu.webserver.user.model.ImFriendUserInfoData">
+		select  uid   as id ,name as username , signature as sign  ,  profilephoto as avatar    from user_info where deptid = #{id}
+	</select>
+	
+	<select id="queryGroupAndUser" resultMap="userFriendMap">
+		select  id,name as groupname  from user_department  
+	</select>
+	 
+
+	<select id="queryList" resultType="com.kefu.webserver.user.model.UserDepartmentEntity">
+		select  <include refid="Base_Column_List" />  from user_department
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from user_department 
+	</select>
+	 
+	<insert id="save" parameterType="com.kefu.webserver.user.model.UserDepartmentEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into user_department
+		(
+			`name`, 
+			`count`, 
+			`level`, 
+			`parentid`, 
+			`remark`, 
+			`createdate`, 
+			`updatedate`, 
+			`updateuser`, 
+			`isdel`
+		)
+		values
+		(
+			#{name}, 
+			#{count}, 
+			#{level}, 
+			#{parentid}, 
+			#{remark}, 
+			#{createdate}, 
+			#{updatedate}, 
+			#{updateuser}, 
+			#{isdel}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.kefu.webserver.user.model.UserDepartmentEntity">
+		update user_department 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="count != null">`count` = #{count}, </if>
+			<if test="level != null">`level` = #{level}, </if>
+			<if test="parentid != null">`parentid` = #{parentid}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="createdate != null">`createdate` = #{createdate}, </if>
+			<if test="updatedate != null">`updatedate` = #{updatedate}, </if>
+			<if test="updateuser != null">`updateuser` = #{updateuser}, </if>
+			<if test="isdel != null">`isdel` = #{isdel}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from user_department where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from user_department where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
